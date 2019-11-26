@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>broadcast chan on, off;
+urgent broadcast chan boils;</declaration>
+	<template>
+		<name x="5" y="5">Water</name>
+		<declaration>const double Tr = 18.5;
+const double k = 0.1;
+ clock T = Tr; //temperature
+
+const double H = 10.0;</declaration>
+		<location id="id0" x="-2082" y="-1632">
+			<name x="-2134" y="-1666">Cooling</name>
+			<label kind="invariant" x="-2177" y="-1615">T' == -k * (T -Tr)</label>
+		</location>
+		<location id="id1" x="-1895" y="-1632">
+			<name x="-1905" y="-1666">Heating</name>
+			<label kind="invariant" x="-1905" y="-1615">T' == -k*(T-Tr) + H &amp;&amp;
+T &lt;= 100</label>
+		</location>
+		<location id="id2" x="-1717" y="-1632">
+			<label kind="invariant" x="-1727" y="-1615">T' == 0</label>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-1996" y="-1700">off?</label>
+			<nail x="-1717" y="-1683"/>
+			<nail x="-2014" y="-1683"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-1827" y="-1666">T&gt;=100</label>
+			<label kind="synchronisation" x="-1827" y="-1649">boils!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-2022" y="-1598">off?</label>
+			<nail x="-1946" y="-1598"/>
+			<nail x="-2040" y="-1598"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-1995" y="-1649">on?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Switch</name>
+		<declaration>clock t;
+</declaration>
+		<location id="id3" x="-535" y="-314">
+			<label kind="invariant" x="-552" y="-340">t&lt;=2</label>
+		</location>
+		<location id="id4" x="-535" y="-238">
+			<label kind="invariant" x="-535" y="-229">t&lt;=30</label>
+		</location>
+		<location id="id5" x="-680" y="-238">
+			<urgent/>
+		</location>
+		<location id="id6" x="-680" y="-170">
+			<label kind="invariant" x="-690" y="-153">t&lt;=10</label>
+		</location>
+		<location id="id7" x="-722" y="-314">
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-662" y="-348">t&gt;=1</label>
+			<label kind="synchronisation" x="-662" y="-331">off!</label>
+			<nail x="-680" y="-314"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-527" y="-289">boils?</label>
+			<label kind="assignment" x="-535" y="-276">t=0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-714" y="-212">t&gt;=10</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-636" y="-204">t&gt;=30</label>
+			<label kind="synchronisation" x="-636" y="-187">off!</label>
+			<label kind="assignment" x="-636" y="-170">t=0</label>
+			<nail x="-535" y="-170"/>
+			<nail x="-654" y="-170"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-636" y="-255">on!</label>
+			<label kind="assignment" x="-636" y="-238">t=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Switch2</name>
+		<declaration>clock t;
+</declaration>
+		<location id="id8" x="-408" y="-238">
+			<label kind="invariant" x="-425" y="-221">t&lt;=2</label>
+		</location>
+		<location id="id9" x="-263" y="-238">
+		</location>
+		<location id="id10" x="-561" y="-238">
+			<label kind="invariant" x="-578" y="-221">t&lt;=30</label>
+		</location>
+		<location id="id11" x="-680" y="-238">
+			<urgent/>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-348" y="-255">t&gt;=1</label>
+			<label kind="synchronisation" x="-348" y="-238">off!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-493" y="-255">boils?</label>
+			<label kind="assignment" x="-484" y="-238">t=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-636" y="-255">on!</label>
+			<label kind="assignment" x="-636" y="-238">t=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+// List one or more processes to be composed into a system.
+system Water,Switch2;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate [&lt;=50] { Water.T }</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

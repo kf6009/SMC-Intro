@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+broadcast   chan poll;
+broadcast   chan reply;
+
+</declaration>
+	<template>
+		<name x="5" y="5">Sensor</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="-263" y="-221">
+			<name x="-273" y="-255">Initial</name>
+			<urgent/>
+		</location>
+		<location id="id1" x="-178" y="-221">
+			<name x="-170" y="-255">Wait</name>
+		</location>
+		<location id="id2" x="-15" y="-314">
+			<name x="-25" y="-348">Respond</name>
+			<label kind="exponentialrate" x="17" y="-331">2</label>
+			<label kind="comments" x="17" y="-306">Replies in some random time</label>
+		</location>
+		<location id="id3" x="-17" y="-127">
+			<name x="0" y="-161">Fault</name>
+			<urgent/>
+		</location>
+		<location id="id4" x="-93" y="-221">
+			<urgent/>
+		</location>
+		<branchpoint id="id5" x="-51" y="-221">
+		</branchpoint>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-160" y="-238">poll?</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<nail x="-178" y="-127"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-177" y="-331">reply!</label>
+			<nail x="-178" y="-314"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id3"/>
+			<label kind="probability" x="-8" y="-212">2</label>
+			<nail x="-17" y="-204"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id2"/>
+			<label kind="probability" x="-8" y="-255">30</label>
+			<nail x="-17" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+		</transition>
+	</template>
+	<template>
+		<name>Monitor</name>
+		<declaration> clock t;</declaration>
+		<location id="id6" x="-527" y="-620">
+			<name x="-537" y="-654">Initial</name>
+			<urgent/>
+		</location>
+		<location id="id7" x="-374" y="-620">
+			<name x="-442" y="-646">Standby</name>
+			<label kind="invariant" x="-416" y="-612">t&lt;=4</label>
+		</location>
+		<location id="id8" x="-255" y="-620">
+			<name x="-265" y="-654">Wait</name>
+			<label kind="invariant" x="-265" y="-603">t&lt;=2</label>
+		</location>
+		<location id="id9" x="-144" y="-722">
+			<name x="-154" y="-756">Gotresult</name>
+			<label kind="invariant" x="-127" y="-731">t&lt;=1</label>
+		</location>
+		<location id="id10" x="-143" y="-501">
+			<name x="-127" y="-518">Gotfault</name>
+			<label kind="invariant" x="-127" y="-501">t&lt;=1</label>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-357" y="-518">t&gt;=1</label>
+			<label kind="assignment" x="-357" y="-501">t=0</label>
+			<nail x="-374" y="-501"/>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-357" y="-739">t&gt;=1</label>
+			<label kind="assignment" x="-356" y="-722">t=0</label>
+			<nail x="-374" y="-722"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-170" y="-612">t&gt;=2</label>
+			<label kind="assignment" x="-170" y="-586">t=0</label>
+			<nail x="-144" y="-586"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-187" y="-671">reply?</label>
+			<label kind="assignment" x="-136" y="-671">t=0</label>
+			<nail x="-144" y="-646"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-356" y="-654">t&gt;=4</label>
+			<label kind="synchronisation" x="-356" y="-637">poll!</label>
+			<label kind="assignment" x="-356" y="-620">t=0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="assignment" x="-509" y="-620">t=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+sensor = Sensor();
+monitor = Monitor();
+
+// List one or more processes to be composed into a system.
+system sensor,monitor;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate [&lt;=100] {monitor.Gotresult , monitor.Wait, monitor.Gotfault}</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; monitor.Gotresult ) </formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; monitor.Gotfault ) </formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; monitor.Gotresult ) &gt;= Pr [&lt;=100] (&lt;&gt; monitor.Gotfault ) </formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

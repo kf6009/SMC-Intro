@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.</declaration>
+	<template>
+		<name x="5" y="5">Ball</name>
+		<declaration>// Place local declarations here.
+clock  y = 10.0;
+clock vy = 0.0;
+broadcast chan bounce;</declaration>
+		<location id="id0" x="-1912" y="-1989">
+			<name x="-1963" y="-2023">Falling</name>
+			<label kind="invariant" x="-1972" y="-1972">y' == vy &amp;&amp;
+vy' == -1.0 &amp;&amp;
+y &gt;= 0</label>
+		</location>
+		<location id="id1" x="-1759" y="-1989">
+			<name x="-1769" y="-2023">Contact</name>
+			<committed/>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="-1904" y="-2108">y=0.01 , vy= -0.8*vy</label>
+			<nail x="-1819" y="-2082"/>
+			<nail x="-1895" y="-2082"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-1894" y="-2023">y==0</label>
+			<label kind="synchronisation" x="-1894" y="-2006">bounce!</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+b = Ball();
+// List one or more processes to be composed into a system.
+system b;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate [&lt;=48] { b.y, b.vy }</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

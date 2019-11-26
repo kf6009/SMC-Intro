@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.</declaration>
+	<template>
+		<name x="5" y="5">NonDeterministic</name>
+		<declaration>// Place local declarations here.
+clock t;</declaration>
+		<location id="id0" x="-663" y="-297">
+			<name x="-673" y="-331">Start</name>
+			<committed/>
+		</location>
+		<location id="id1" x="-569" y="-340">
+			<name x="-579" y="-374">A</name>
+		</location>
+		<location id="id2" x="-569" y="-255">
+			<name x="-579" y="-289">B</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+		</transition>
+	</template>
+	<template>
+		<name>Weighted</name>
+		<location id="id3" x="-595" y="-237">
+			<name x="-605" y="-271">Start</name>
+			<committed/>
+		</location>
+		<location id="id4" x="-501" y="-195">
+			<name x="-511" y="-229">B</name>
+		</location>
+		<location id="id5" x="-501" y="-280">
+			<name x="-511" y="-314">A</name>
+		</location>
+		<branchpoint id="id6" x="-544" y="-238">
+		</branchpoint>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id4"/>
+			<label kind="probability" x="-535" y="-221">1</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="probability" x="-535" y="-272">4</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id6"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+// List one or more processes to be composed into a system.
+system NonDeterministic, Weighted;
+    </system>
+	<queries>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; NonDeterministic.A)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; NonDeterministic.A)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; Weighted.A)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=100] (&lt;&gt; Weighted.B)</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.</declaration>
+	<template>
+		<name x="5" y="5">A1</name>
+		<declaration>// Place local declarations here.
+clock x;
+</declaration>
+		<location id="id0" x="-204" y="-680">
+			<name x="-214" y="-714">End</name>
+		</location>
+		<location id="id1" x="-306" y="-680">
+			<label kind="invariant" x="-316" y="-663">x&lt;=4</label>
+		</location>
+		<location id="id2" x="-408" y="-680">
+			<label kind="invariant" x="-418" y="-663">x&lt;=4</label>
+		</location>
+		<location id="id3" x="-510" y="-680">
+			<label kind="invariant" x="-520" y="-663">x&lt;=4</label>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-289" y="-697">x&gt;=2</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-391" y="-697">x&gt;=2</label>
+			<label kind="assignment" x="-390" y="-680">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-493" y="-697">x&gt;=2</label>
+			<label kind="assignment" x="-492" y="-680">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>A2</name>
+		<declaration>clock x;</declaration>
+		<location id="id4" x="-289" y="-408">
+			<committed/>
+		</location>
+		<location id="id5" x="-170" y="-357">
+			<label kind="invariant" x="-180" y="-340">x&lt;=4</label>
+		</location>
+		<location id="id6" x="-170" y="-459">
+			<label kind="invariant" x="-180" y="-442">x&lt;=4</label>
+		</location>
+		<location id="id7" x="-68" y="-357">
+			<label kind="invariant" x="-78" y="-340">x&lt;=4</label>
+		</location>
+		<location id="id8" x="-68" y="-459">
+			<label kind="invariant" x="-78" y="-442">x&lt;=4</label>
+		</location>
+		<location id="id9" x="136" y="-459">
+			<name x="126" y="-493">End</name>
+		</location>
+		<location id="id10" x="34" y="-459">
+			<label kind="invariant" x="24" y="-442">x&lt;=4</label>
+		</location>
+		<branchpoint id="id11" x="-238" y="-408">
+		</branchpoint>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="68" y="-476">x&gt;=2</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-35" y="-476">x&gt;=2</label>
+			<label kind="assignment" x="-34" y="-459">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-137" y="-476">x&gt;=2</label>
+			<label kind="assignment" x="-136" y="-459">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id6"/>
+			<label kind="probability" x="-221" y="-442">1</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-34" y="-374">x&gt;=2</label>
+			<nail x="136" y="-357"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-137" y="-374">x&gt;=2</label>
+			<label kind="assignment" x="-136" y="-357">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id5"/>
+			<label kind="probability" x="-221" y="-391">5</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id11"/>
+		</transition>
+	</template>
+	<template>
+		<name>A3</name>
+		<declaration>clock x;</declaration>
+		<location id="id12" x="-238" y="-306">
+			<label kind="exponentialrate" x="-246" y="-289">1:2</label>
+		</location>
+		<location id="id13" x="-102" y="-357">
+			<label kind="exponentialrate" x="-110" y="-340">2</label>
+		</location>
+		<location id="id14" x="-102" y="-255">
+			<label kind="exponentialrate" x="-110" y="-238">1:4</label>
+		</location>
+		<location id="id15" x="-34" y="-306">
+			<name x="-44" y="-340">End</name>
+		</location>
+		<branchpoint id="id16" x="-170" y="-306">
+		</branchpoint>
+		<init ref="id12"/>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id14"/>
+			<label kind="probability" x="-153" y="-289">3</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id15"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id13"/>
+			<label kind="probability" x="-153" y="-340">1</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id16"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+// List one or more processes to be composed into a system.
+system A1, A2, A3;
+    </system>
+	<queries>
+		<query>
+			<formula>Pr [&lt;=20;100000] (&lt;&gt; A1.End )</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=20;100000] (&lt;&gt; A2.End )</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=20;100000] (&lt;&gt; A3.End )</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.</declaration>
+	<template>
+		<name x="5" y="5">Template</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-586" y="-246">
+			<label kind="exponentialrate" x="-620" y="-238">1:2</label>
+		</location>
+		<location id="id1" x="-442" y="-246">
+			<name x="-452" y="-280">Arrive</name>
+			<urgent/>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<nail x="-467" y="-221"/>
+			<nail x="-561" y="-221"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<nail x="-552" y="-280"/>
+			<nail x="-467" y="-280"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate [&lt;=100] { Process.Arrive }</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>Pr [&lt;=20] (&lt;&gt; Process.Arrive )</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
